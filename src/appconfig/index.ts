@@ -241,17 +241,11 @@ export const NETWORKS: { [key: number]: INetwork } = {
  
  
 
-export const WETH = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-export const WMATIC = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
-export const WBNB = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
-export const WAVAX = '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
-export const WFTM = '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'
-export const WCRO = '0x5c7f8a570d578ed84e63fdfa7b1ee72deae1ae23'  
-
+ 
 
 export const TOKEN = new Token(
   REACT_APP_SUPPORTED_CHAINID,
-  '0x913368688E0309FC63e33D82E35d608913B075e3',
+  '0xC9a906c7dded4b8349cBcF890901db5aE906b195',
   18,
   'PDyce',
   'PDyce'
@@ -277,4 +271,4 @@ export const SWAP_SRC=PEG.address;
 export const SWAP_DEST=TOKEN.address; 
 export const MINSLIPPAGE=25;
 export const SWAPFEES=25;
-export const FEEWALLET='0x9d8E02bF06C33403FaaFB357588AA30A1131E6A8';
+export const FEEWALLET='0xC9a906c7dded4b8349cBcF890901db5aE906b195';

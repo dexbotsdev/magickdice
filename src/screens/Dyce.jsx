@@ -37,7 +37,7 @@ export default function Dyce(props) {
     const [payValue, setPayValue] = useState(0)
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
-    const [depositvalue, setDepositvalue] = useState("");
+    const [depositvalue, setDepositvalue] = useState("0");
     const [diceNum, setDiceNum] = useState(0);
     const [rollEnabled, setRollEnabled] = useState(false);
     const [adminButton, setAdminButton] = useState(false);
@@ -49,7 +49,7 @@ export default function Dyce(props) {
 
     const isSRCApproved = async () => {
         const allowance = await SRCCONTRACT.allowance(address, TOKEN.address);
-        if (allowance.lte(0)) {
+        if (allowance.lte(5)) {
             return false;
         }
         return true;
@@ -78,11 +78,11 @@ export default function Dyce(props) {
     const onDeposit = async (token, amount, pool) => {
 
 
-        if (Number(amount) < 5) {
+        if (Number(amount) < 5 || Number(amount)>10) {
             notifications.showNotification({
                 color: 'red',
                 title: 'Error.',
-                message: 'Deposit Value cannot be less than 10 USDT',
+                message: 'Deposit Value cannot be less than 5 USDT or more than 10 USDT',
             })
 
             return;
@@ -95,12 +95,21 @@ export default function Dyce(props) {
                     await dicecontract.deposit(amount.toString())).wait());
                     setLoading(false);
             } catch (error) {
-                console.log( error.data.message)
+                if((new String(error)).includes('transfer amount exceeds balance'))
                 notifications.showNotification({
                     color: 'red',
                     title: 'Error.',
-                    message: error.data.message,
+                    message: 'transfer amount exceeds balance',
                 })
+                if((new String(error)).includes('transfer amount exceeds allowance'))
+                {notifications.showNotification({
+                    color: 'red',
+                    title: 'Error.',
+                    message: 'transfer amount exceeds allowance',
+                })
+                setAllowanceIn(false);
+
+            }
                 setLoading(false);
                 return;
             }
@@ -269,8 +278,8 @@ export default function Dyce(props) {
                             styles={{ input: { width: "100%", boxSizing: "border-box" } }}
                             style={{ marginBottom: 15 }}
                             value={depositvalue}
-                            onChange={(event) =>
-                                setDepositvalue(event.currentTarget.value)
+                            onChange={(value) =>
+                                setDepositvalue(value)
                             }
                             hideControls
                         />
@@ -287,7 +296,7 @@ export default function Dyce(props) {
                         Bet range :
                     </Title>
                     <Title order={6} align={"center"} style={{ color: '#d8daeb' }}>
-                        5 USDT to 250 USDT
+                        5 USDT to 10 USDT
                     </Title>
                 </Group>
                 <Group position="right">
